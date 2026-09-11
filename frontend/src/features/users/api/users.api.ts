@@ -2,8 +2,8 @@ import { http } from "../../../api/http"
 
 export interface User {
     id: string
-    name: string
     email: string
+    password: string
 }
 
 export const getUsers = async () => {

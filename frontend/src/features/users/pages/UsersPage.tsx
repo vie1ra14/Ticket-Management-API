@@ -17,7 +17,7 @@ export function UsersPage() {
 
     return (
         <div>
-            {users.map(user => user.name)}
+            {users.map(user => user.email)}
         </div>
     )
 }
