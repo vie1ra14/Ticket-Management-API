@@ -7,12 +7,12 @@ from app.schemas.user import UserCreate, UserResponse
 from app.core.security import hash_password
 
 router = APIRouter(
-    prefix="/users",
-    tags=["users"]
+    prefix="/register",
+    tags=["register"]
 )
 
 
-@router.post("/", response_model=UserResponse, status_code=201)
+@router.post("", response_model=UserResponse, status_code=201)
 def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
     # Check if the email already exists
     existing_user = db.query(User).filter(

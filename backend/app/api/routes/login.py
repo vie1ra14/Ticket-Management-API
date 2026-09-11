@@ -6,10 +6,10 @@ from app.models.user import User
 from app.schemas.user import UserLogin
 from app.core.security import verify_password, create_access_token
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/login", tags=["login"])
 
 
-@router.post("/login")
+@router.post("")
 def login(user_login: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == user_login.email).first()
     if not user:
@@ -24,5 +24,4 @@ def login(user_login: UserLogin, db: Session = Depends(get_db)):
         {"sub": str(user.id), "role": user.role})  # type: ignore
 
     return {"acess_token": acess_token,
-            "token_type": "bearer",
-            "role": user.role}  # type: ignore
+            "token_type": "bearer"}
