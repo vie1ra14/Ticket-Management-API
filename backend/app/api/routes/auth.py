@@ -1,12 +1,15 @@
+# type: ignore
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db
 from app.models.user import User
-from app.schemas.user import UserLogin
-from app.core.security import verify_password, create_access_token
+from app.schemas.user import UserLogin, UserResponse, UserCreate
+from app.core.dependencies import get_current_user
+from app.core.security import (verify_password,
+                               create_access_token, hash_password)
 
-router = APIRouter(prefix="/auth", tags=["authentication"])
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/login")
@@ -21,8 +24,38 @@ def login(user_login: UserLogin, db: Session = Depends(get_db)):
             status_code=401, detail="Invalid email or password")
 
     acess_token = create_access_token(
-        {"sub": str(user.id), "role": user.role})  # type: ignore
+        data={
+            "sub": str(user.id),
+            "role": user.role
+        })
 
     return {"acess_token": acess_token,
-            "token_type": "bearer",
-            "role": user.role}  # type: ignore
+            "type": "bearer"}
+
+
+@router.post("/logout")
+def logout(current_user: User = Depends(get_current_user)):
+    return {"message": "Logout successful"}
+
+
+@router.post("/register", response_model=UserResponse, status_code=201)
+def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter(
+        User.email == user_data.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+
+    user = User(
+        name=user_data.name,
+        email=user_data.email,
+        password=hash_password(user_data.password)
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.get("/me")
+def read_current_user(current_user: User = Depends(get_current_user)):
+    return {"message": f"Hello, {current_user.name}!"}

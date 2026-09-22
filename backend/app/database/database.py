@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
@@ -9,12 +10,16 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
 
+    ALLOWED_ORIGINS: list[str] = Field(default_factory=lambda: ["*"])
+
     class Config:
         env_file = ".env",
         extra = "ignore"
 
 
 settings = Settings()  # type: ignore
+
+print("ALLOWED_ORIGINS =", settings.ALLOWED_ORIGINS)
 
 engine = create_engine(settings.DATABASE_URL)
 
