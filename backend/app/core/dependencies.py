@@ -16,7 +16,7 @@ def get_current_user(token: str = Depends(oauth2_scheme),
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Not authenticated",
-        headers={"WWW-Authenticate": "Bearer"}),
+        headers={"WWW-Authenticate": "Bearer"})
 
     try:
         payload = jwt.decode(
