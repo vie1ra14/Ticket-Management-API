@@ -2,7 +2,13 @@ import { Navigate, Outlet } from "react-router";
 import { useUser } from "../features/users/hooks/useUsers";
 import { useAuthToken } from "../features/login/hooks/useAuthSession";
 
-export function ProtectRoute() {
+export type UserRole = "admin" | "agent" | "user"
+
+type ProtectRouteProps = {
+    allowedRoles?: UserRole[]
+}
+
+export function ProtectRoute({ allowedRoles }: ProtectRouteProps) {
     const { data: token } = useAuthToken()
     const { data: user, isLoading, isError } = useUser()
 
@@ -18,7 +24,10 @@ export function ProtectRoute() {
         return <Navigate to={"/login"} replace />
     }
 
-    if (user.role !== "admin") {
+    const isAdmin = user.role === "admin"
+    const roleIsAllowed = allowedRoles === undefined || allowedRoles.includes(user.role as UserRole)
+
+    if(!isAdmin && !roleIsAllowed) {
         return <Navigate to={"/"} replace />
     }
 

@@ -24,14 +24,19 @@ export const router = createBrowserRouter([
                 path: "/register",
                 element: <Register />
             },
+            // AGENTS ROUTES
             {
-                path: "/users",
-                element: <UsersPage />
+                element: <ProtectRoute allowedRoles={["agent"]} />,
+                children: [
+                    {
+                        path: "/users",
+                        element: <UsersPage />
+                    }
+                ]
             },
-
             // PROTECT ROUTES
             {
-                element: <ProtectRoute />,
+                element: <ProtectRoute allowedRoles={["admin"]} />,
                 children: [
                     {
                         path: "/admin",
