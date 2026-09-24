@@ -12,13 +12,12 @@ export function useAuthToken() {
         queryKey: authTokenQueryKey,
         queryFn: getStoredToken,
         initialData: getStoredToken,
-        staleTime: Infinity,
-        gcTime: Infinity,
     })
 }
 
 export function useSetAuthToken() {
     const queryClient = useQueryClient()
+    console.log(queryClient)
 
     return (token: string | null) => {
         if (token) {

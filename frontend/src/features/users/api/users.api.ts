@@ -1,10 +1,11 @@
 import { http } from "../../../api/http"
+import type { UserRole } from "../../../routes/ProtectRoute"
 
 export interface User {
     id: number
     email: string
     password?: string
-    role: string
+    role: UserRole
 }
 
 export const getUsers = async () => {

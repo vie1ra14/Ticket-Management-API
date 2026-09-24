@@ -6,7 +6,7 @@ import styles from "./Navbar.module.css"
 import { useLogout } from "../../features/login/hook/useLogin"
 import { useAuthToken } from "../../features/login/hooks/useAuthSession"
 
-export function Navbar() {
+export function Navbar () {
     const { data: token } = useAuthToken()
     const { mutate: logout, isPending: isLoggingOut } = useLogout()
 
@@ -29,7 +29,7 @@ export function Navbar() {
                 <ul className={styles.list}>
                     <li>
                         {token ? (
-                            <Button type="primary" loading={isLoggingOut} onClick={() => logout()}>
+                            <Button type="primary" loading={isLoggingOut} onClick={() => logout ()}>
                                 Sair
                             </Button>
                         ) : (
@@ -38,7 +38,6 @@ export function Navbar() {
                             </Link>
                         )}
                     </li>
-
                     <li>
                         {
                             !token && <Link
@@ -51,10 +50,8 @@ export function Navbar() {
                             </Link>
                         }
                     </li>
-
                 </ul>
             </nav>
-
         </div>
     )
 }

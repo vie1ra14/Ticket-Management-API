@@ -13,7 +13,6 @@ export const useLogin = () => {
 
 export const useLogout = () => {
     const setAuthToken = useSetAuthToken()
-
     return useMutation({
         mutationFn: Logout,
         onSuccess: (status) => {
