@@ -2,10 +2,11 @@
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 
-
 from app.database.database import Base, engine, settings
 from app.api.routes.auth import router as auth_router
 from app.api.routes.users import router as users_router
+from app.api.routes.tickets import router as ticket_router
+from app.models.revocked_token import RevokedToken
 from app.models.user import User
 
 Base.metadata.create_all(bind=engine)
@@ -27,7 +28,7 @@ app. add_middleware(
 api_router = APIRouter(prefix="/api/v1")
 api_router.include_router(auth_router)
 api_router.include_router(users_router)
-
+api_router.include_router(ticket_router)
 app.include_router(api_router)
 
 
