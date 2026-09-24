@@ -1,1 +1,10 @@
+.container {
+    width: 20%;
+}
 
+.content {
+    min-height: calc(100vh - 68px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

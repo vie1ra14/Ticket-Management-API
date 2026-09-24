@@ -1,13 +1,16 @@
 import './App.css'
-import { Login } from './features/login/pages/Login'
-import { UsersPage } from './features/users/pages/UsersPage'
+import { Outlet } from 'react-router'
+import { Navbar } from './components/Navbar/Navbar'
 
 function App() {
+
   return (
-    <>
-    <Login />
-    <UsersPage />
-    </>
+    <section>
+      <Navbar />
+      <main className="content">
+        <Outlet />
+      </main>
+    </section>
   )
 }
 

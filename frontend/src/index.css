@@ -1,1 +1,35 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
+html,
+body,
+#root {
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #0F1A2A;
+}
+
+.button-login {
+    background-color: #16a34a;
+    padding: 4px 30px;
+}
+
+.button-login:hover {
+    background-color: #15803d;
+}
+
+.button-register {
+    padding: 4px 30px;
+}
+
+.button-register:hover {}
+
+#root {
+    width: 100%;
+}

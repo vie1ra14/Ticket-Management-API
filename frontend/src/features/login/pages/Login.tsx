@@ -1,46 +1,53 @@
-import { useState, type MouseEvent } from "react"
-import  styles  from "./Login.module.css"
-import axios from "axios"
+import { Alert, Button, Form, Input } from "antd"
+import styles from "./Login.module.css"
+import { useLogin } from "../hook/useLogin"
+import { useNavigate } from "react-router"
 
-export function Login () {
-    const [email, setEmail] = useState<string>()
-    const [password, setPassword] = useState<string>()
+type LoginFormValues = {
+    email: string
+    password: string
+}
 
-    const handleSubmit = async (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
+export function Login() {
+    const { mutate: login, isPending, error } = useLogin()
+    const navigate = useNavigate()
 
-        const response = await axios.post("http://localhost:3333/users", {
-            email,
-            password
+    const handleSubmit = ({ email, password }: LoginFormValues) => {
+        login({ email, password }, {
+            onSuccess: () => {
+                navigate("/")
+            },
         })
-
-        return response
     }
 
     return (
-        <form action="http://localhost:3333/users" method="POST" className={styles.login}>
-            <input
-                type="email"
+        <Form<LoginFormValues>
+            className={styles.login}
+            layout="vertical"
+            onFinish={handleSubmit}
+            requiredMark={false}
+        >
+            <Form.Item
+                label="Email"
                 name="email"
-                id="email"
-                placeholder="digite o seu email"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="digite sua senha"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-                onClick={(e) => handleSubmit(e)}
+                rules={[
+                    { required: true, message: "Informe seu email." },
+                    { type: "email", message: "Informe um email válido." },
+                ]}
             >
-                login
-            </button>
-        </form>
+                <Input type="email" placeholder="seu@email.com" autoComplete="email" />
+            </Form.Item>
+            <Form.Item
+                label="Senha"
+                name="password"
+                rules={[{ required: true, message: "Informe sua senha." }]}
+            >
+                <Input.Password placeholder="Sua senha" autoComplete="current-password" />
+            </Form.Item>
+            {error && <Alert type="error" showIcon message="Não foi possível realizar o login." />}
+            <Button type="primary" htmlType="submit" loading={isPending} block>
+                Entrar
+            </Button>
+        </Form>
     )
 }

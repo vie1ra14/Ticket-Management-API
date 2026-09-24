@@ -1,4 +1,4 @@
-.login {
+.register {
     box-sizing: border-box;
     width: min(100% - 32px, 400px);
     background-color: #162235;
@@ -10,16 +10,16 @@
     margin: 0 auto;
 }
 
-.login :global(.ant-form-item-label > label) {
+.register :global(.ant-form-item-label > label) {
     color: #ffffff;
 }
 
-.login :global(.ant-form-item-explain-error) {
+.register :global(.ant-form-item-explain-error) {
     color: #ff7875;
 }
 
 @media (max-width: 480px) {
-    .login {
+    .register {
         width: min(100% - 24px, 400px);
         padding: 20px 16px;
         margin: 0 auto;
