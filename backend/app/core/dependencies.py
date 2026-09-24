@@ -6,6 +6,7 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.database.database import get_db, settings
+from app.models.revoked_token import RevokedToken
 from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
@@ -16,7 +17,13 @@ def get_current_user(token: str = Depends(oauth2_scheme),
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Not authenticated",
-        headers={"WWW-Authenticate": "Bearer"}),
+        headers={"WWW-Authenticate": "Bearer"})
+
+    revoked_token = db.query(RevokedToken).filter(
+        RevokedToken.token == token).first()
+
+    if revoked_token:
+        raise credentials_exception
 
     try:
         payload = jwt.decode(
