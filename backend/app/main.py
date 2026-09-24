@@ -6,7 +6,7 @@ from app.database.database import Base, engine, settings
 from app.api.routes.auth import router as auth_router
 from app.api.routes.users import router as users_router
 from app.api.routes.tickets import router as ticket_router
-from app.models.revocked_token import RevokedToken
+from app.models.revoked_token import RevokedToken
 from app.models.user import User
 
 Base.metadata.create_all(bind=engine)
